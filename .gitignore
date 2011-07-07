@@ -1,0 +1,4 @@
+*.rpyc
+*.rpyb
+*.bak
+*/pho/*.png

@@ -132,7 +132,10 @@ init python:
         renpy.take_screenshot((800,600))
         photo = renpy.game.interface.get_screenshot()
         photoname = hashlib.md5(photo).hexdigest()
-        f = open(config.basedir + "/game/pho/" + photoname + ".png","w")
+        photodir = config.basedir + "/game/pho/"
+        if(os.path.isdir(photodir) == False):
+            os.mkdir(photodir)
+        f = open(photodir + photoname + ".png","w")
         f.write(photo)
         f.close()
         return photoname
@@ -179,11 +182,18 @@ label start:
     
 label formular:
     "Zuerst den Vornamen."
-    $ vorname = renpy.input("Vorname:","",length=50)
+    $ vorname = renpy.input("Vorname:","Max",length=50)
     "OK, jetzt den Nachnamen."
-    $ nachname = renpy.input("Nachname:","",length=50)
+    $ nachname = renpy.input("Nachname:",u"Musterschüler",length=50)    
     "Nun noch das Alter..."
-    $ alter = int(renpy.input("Alter:","",length=3,allow="0123456789"))
+
+label altersinput:
+    $ alter = renpy.input("Alter:","14",length=3,allow="0123456789")
+    python:
+        try:
+            alter = int(alter)
+        except:
+            alter = 14
     "Und das Geschlecht."
     menu:
         "Geschlecht:"

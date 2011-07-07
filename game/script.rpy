@@ -4,16 +4,15 @@
 # Definiert alle wichtigen Funktionen, Styles, etc.
 
 init -1 python:
+   
+    import os,hashlib,math
 
     # Variablen
 
     show_button_menu = True
     show_inventory_menu = False
-    photos = []
-
-init python:
-
-    import os,hashlib
+    show_camera_menu = False
+    items = []
 
     # Alle Bilder laden
     imagepath = config.basedir + "/game/img/"    
@@ -23,6 +22,44 @@ init python:
             filename = path[len(imagepath):]+"/"+file
             nametuple = tuple(filename[:-4].split("/"))
             renpy.image(nametuple,"img/"+filename)
+    
+    # Klassen
+    
+    class item:
+        """
+        item(name,action,image=None)
+        
+        Defines an item that can be carried by the player.
+        
+        name - String. The name of the item.
+        action - Callable. The function to call when the item is clicked.
+        image - Displayable to use as the item picture. If none, name is used to load one.
+        """
+        
+        def __init__(self,name,action,image=None):
+            self.name = name
+            self.action = action
+            if image != None:
+                self.image = image
+            else:
+                self.image = ImageReference(("item",name))
+
+init python:
+
+    # Item-Funktionen
+    
+    def newItem(name,action,image=None):
+        items.append(item(name,action,image))
+        
+    def giveItem(name):
+        for i in items:
+            if i.name == name:
+                inventory.append(i)
+                
+    def takeItem(name):
+        for i in inventory:
+            if i.name == name:
+                del inventory[inventory.index(i)]
             
     # Haupt-Buttons
     
@@ -32,7 +69,7 @@ init python:
         
         ui.vbox(xpos=1.0,ypos=1.0,xanchor="right",yanchor="bottom")
         ui.textbutton("Inventar",clicked=toggle_ui_inventory)
-        ui.textbutton("Kamera",clicked=toggle_ui_camera)
+        ui.textbutton("Kamera",clicked=camera_take_photo)
         ui.textbutton("Notizen",clicked=toggle_ui_notes)
         ui.close()
         
@@ -48,21 +85,49 @@ init python:
     def ui_inventory_menu():     
         if show_inventory_menu == False:
             return
-        ui.window(xpos=0.0,xanchor="left",ypos=0.0,yanchor="top",ymaximum=100,background=Solid((0,0,0,128)))
+        ui.window(area=(0,0,1024,100),ypadding=0,xpadding=0,clipping=True,background=Solid((0,0,0,128)))
         ui.hbox()
-        # write items here
+        for i in inventory:
+            b_image = im.Scale(i.image,100,100)
+            ui.imagebutton(b_image,im.MatrixColor(b_image,im.matrix.brightness(0.2)),clicked=i.action,ymargin=0,ypadding=0)
         ui.close()
-            
     config.window_overlay_functions.append(ui_inventory_menu)
         
     # Kamera
     
+    def ui_camera_menu():
+        if show_camera_menu == False:
+            return
+        ui.side(('c', 'r'), xalign=0.5,yalign=0.5, spacing=5)
+        cam_vp = ui.viewport(area=(0,0,400,300),background=Solid((0,0,0,128)),draggable=True)
+        ui.window(xmargin=0,ymargin=0,xpadding=0,ypadding=0,yfill=True,background=Solid((0,0,0,128)))
+        picnum = len(photos)
+        if picnum == 0:
+            ui.text("Keine Fotos",xalign=0.5,yalign=0.5)
+        else:
+            rownum = int(math.ceil(picnum/4.0))
+            ui.grid(4,rownum)
+            phonum = 0
+            for i in photos:
+                ui.image(im.Scale("pho/"+i+".png",100,75))
+                phonum+=1
+            for i in range(0,(4*rownum)-phonum):
+                ui.null()
+            ui.close()
+        ui.bar(adjustment=cam_vp.yadjustment, style='vscrollbar')
+    
+    config.window_overlay_functions.append(ui_camera_menu)
+    
     def toggle_ui_camera():
-        renpy.invoke_in_new_context(camera_take_photo)
-        pass
-        
+        global show_camera_menu
+        show_camera_menu = not show_camera_menu
+        renpy.restart_interaction()
+    
     def camera_take_photo():
-        ui.pausebehavior(0.01)
+        photos.append(renpy.invoke_in_new_context(_camera_take_photo))
+        
+    def _camera_take_photo():
+        ui.pausebehavior(0.0)
         ui.interact(suppress_overlay=True, suppress_window=True)
         renpy.take_screenshot((800,600))
         photo = renpy.game.interface.get_screenshot()
@@ -76,6 +141,15 @@ init python:
     
     def toggle_ui_notes():
         pass
+        
+    # Items
+    
+    def item_camera():
+        # Kamera-Bildschirm auf dem man alle gemachten Fotos anschauen oder neue machen kann.
+        toggle_ui_camera()
+        return
+    
+    newItem("kamera",item_camera)
 
 # Definitionen
 define h = Character('Hausmeister')
@@ -85,6 +159,9 @@ image bg white = Solid((255,255,255,255))
 
 # Hier startet das eigentliche Spiel
 label start:
+
+    $ photos = [ ]
+    $ inventory = [ ]
 
     #$ result = renpy.imagemap("bg haupteingang",im.MatrixColor(ImageReference("bg haupteingang"),im.matrix.contrast(1.5)),[(350,377,468,555,"keks"),(598,377,735,555,"keks")])
     
@@ -134,9 +211,28 @@ label formular:
             jump formular
     
 label vorstellung:
+
     scene bg haupteingang with fade
     
     h "Willkommen in der Wilhelm-Raabe-Schule, %(vorname)s!"
+    h "Als Geschenk zum Schulanfang, überreiche ich dir dies hier!"
+    
+    show item kamera:
+        xalign 0.5 yalign 0.5
+        zoom 0.0
+        linear 0.5 zoom 2.0
+    
+    h "Eine brandneue Digitalkamera!"
+    
+    show item kamera:
+        linear 0.5 zoom 0.0
+    
+    $ giveItem("kamera")
+    
+    h "Damit kannst du überall Fotos von Dingen und Orten schießen, die du nicht vergessen willst!"
+    
+    hide item kamera
+    
     h "Bevor dein Schulalltag beginnt, möchte ich dir die Schule etwas näher vorstellen."
     h "Bist du bereit?"
     menu:

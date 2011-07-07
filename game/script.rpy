@@ -135,7 +135,7 @@ init python:
         photodir = config.basedir + "/game/pho/"
         if(os.path.isdir(photodir) == False):
             os.mkdir(photodir)
-        f = open(photodir + photoname + ".png","w")
+        f = open(photodir + photoname + ".png","wb")
         f.write(photo)
         f.close()
         return photoname

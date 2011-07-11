@@ -12,6 +12,7 @@ init -1 python:
     show_button_menu = True
     show_inventory_menu = False
     show_camera_menu = False
+    show_camera_large_pic = None
     items = []
 
     # Alle Bilder laden
@@ -92,31 +93,81 @@ init python:
             ui.imagebutton(b_image,im.MatrixColor(b_image,im.matrix.brightness(0.2)),clicked=i.action,ymargin=0,ypadding=0)
         ui.close()
     config.window_overlay_functions.append(ui_inventory_menu)
-        
+
     # Kamera
     
     def ui_camera_menu():
+        global show_camera_large_pic
         if show_camera_menu == False:
             return
-        ui.side(('c', 'r'), xalign=0.5,yalign=0.5, spacing=5)
-        cam_vp = ui.viewport(area=(0,0,400,300),background=Solid((0,0,0,128)),draggable=True)
-        ui.window(xmargin=0,ymargin=0,xpadding=0,ypadding=0,yfill=True,background=Solid((0,0,0,128)))
+        ui.image(ImageReference(("item","kamera_menu")))    
+        
+        #screen
+        
+        ui.side(('c', 'r'), xpos=171,ypos=221,xanchor='left',yanchor='top')
+        ui.window(xmargin=0,ymargin=0,xpadding=0,ypadding=0,background=ImageReference(("item","kamera_menu_bg")))
+        cam_vp = ui.viewport(area=(0,0,572,326),mousewheel=True,draggable=True,xmargin=0,ymargin=0)
+        ui.window(xmargin=0,ymargin=0,xpadding=6,ypadding=6,background=None)
         picnum = len(photos)
         if picnum == 0:
+            ui.window(yfill=True,xmargin=0,ymargin=0,background=Solid((0,0,0,40)))
             ui.text("Keine Fotos",xalign=0.5,yalign=0.5)
+            ui.null()
         else:
-            rownum = int(math.ceil(picnum/4.0))
-            ui.grid(4,rownum)
-            phonum = 0
-            for i in photos:
-                ui.image(im.Scale("pho/"+i+".png",100,75))
-                phonum+=1
-            for i in range(0,(4*rownum)-phonum):
+            if show_camera_large_pic == None:# not showing zoomed, therefore showing grid
+                rownum = int(math.ceil(picnum/5.0))
+                ui.grid(5,rownum,10)
+                phonum = 0
+                for i in photos:
+                    ui.button(clicked=ui_camera_large_pic(i),ypadding=2,xpadding=2,xmargin=0,ymargin=0)
+                    ui.image(im.Scale("pho/"+i+".png",100,75))
+                    phonum+=1
+                for i in range(0,(5*rownum)-phonum):
+                    ui.null()
+                ui.close()
+                ui.bar(adjustment=cam_vp.yadjustment, style='vscrollbar')
+            else: #showing zoomed
+                ui.image(im.Scale("pho/"+show_camera_large_pic+".png",418,314,xalign=0.5))
                 ui.null()
-            ui.close()
-        ui.bar(adjustment=cam_vp.yadjustment, style='vscrollbar')
+        
+        ui.close()
+        #buttons
+        ui.fixed(xpos=814,ypos=229)
+        ui.imagebutton(Solid((255,255,255,0)),Solid((255,255,255,0)),clicked=ui_camera_zoom_pic,area=(36,54,53,53))
+        ui.imagebutton(Solid((255,255,255,0)),Solid((255,255,255,0)),clicked=ui_camera_hide_large_pic,area=(36,130,53,53))
+        ui.imagebutton(Solid((255,255,255,0)),Solid((255,255,255,0)),clicked=ui_camera_delete_pic,area=(36,205,53,53))
+        ui.close()
     
     config.window_overlay_functions.append(ui_camera_menu)
+    
+    def _ui_camera_large_pic(p):
+        global show_camera_large_pic
+        show_camera_large_pic = p
+        renpy.restart_interaction()
+        
+    ui_camera_large_pic = renpy.curry(_ui_camera_large_pic)
+    
+    def ui_camera_hide_large_pic():
+        global show_camera_large_pic
+        show_camera_large_pic = None
+        renpy.restart_interaction()
+    
+    def ui_camera_zoom_pic():
+        renpy.invoke_in_new_context(_ui_camera_zoom_pic)
+    
+    def _ui_camera_zoom_pic():
+        if show_camera_large_pic == None:
+            return None
+        ui.window(yfill=True)
+        ui.image("pho/"+show_camera_large_pic+".png",xalign=0.5,yalign=0.5)
+        ui.saybehavior()
+        ui.interact()
+    
+    def ui_camera_delete_pic():
+        if show_camera_large_pic == None:
+            return None
+        del photos[photos.index(show_camera_large_pic)]
+        ui_camera_hide_large_pic()
     
     def toggle_ui_camera():
         global show_camera_menu
@@ -124,7 +175,8 @@ init python:
         renpy.restart_interaction()
     
     def camera_take_photo():
-        photos.append(renpy.invoke_in_new_context(_camera_take_photo))
+        newPhoto = renpy.invoke_in_new_context(_camera_take_photo)
+        photos.append(newPhoto)
         
     def _camera_take_photo():
         ui.pausebehavior(0.0)
@@ -139,7 +191,7 @@ init python:
         f.write(photo)
         f.close()
         return photoname
-    
+            
     # Notizen
     
     def toggle_ui_notes():
@@ -153,7 +205,7 @@ init python:
         return
     
     newItem("kamera",item_camera)
-
+        
 # Definitionen
 define h = Character('Hausmeister')
 
@@ -162,13 +214,11 @@ image bg white = Solid((255,255,255,255))
 
 # Hier startet das eigentliche Spiel
 label start:
-
+    
     $ photos = [ ]
     $ inventory = [ ]
-
-    #$ result = renpy.imagemap("bg haupteingang",im.MatrixColor(ImageReference("bg haupteingang"),im.matrix.contrast(1.5)),[(350,377,468,555,"keks"),(598,377,735,555,"keks")])
     
-    #$ print result
+    jump vorstellung
     
     scene bg black with fade
     
@@ -230,7 +280,7 @@ label vorstellung:
     show item kamera:
         xalign 0.5 yalign 0.5
         zoom 0.0
-        linear 0.5 zoom 2.0
+        linear 0.5 zoom 1.0
     
     h "Eine brandneue Digitalkamera!"
     
@@ -283,4 +333,3 @@ label vorstellung:
     h "Sieh dir diese beeindruckende Halle an!"
     h "Über diese Flügeltür geht es wieder auf den Schulhof."
     h "Folgst du dieser Treppe, gelangst du in den ersten Stock."
-    

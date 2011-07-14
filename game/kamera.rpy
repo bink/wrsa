@@ -36,7 +36,8 @@ init -1 python:
                     ui.close() # close grid
                 else: # zoom foto anzeigen
                     ui.window(xfill=False,background=Solid((0,0,0,100)))
-                    ui.image(im.Scale("pho/"+show_camera_large_pic+".png",400,300),xalign=0.5,yalign=0.5)
+                    pho = im.Scale("pho/"+show_camera_large_pic+".png",400,300)
+                    ui.imagebutton(pho,pho,xalign=0.5,yalign=0.5,clicked=ui_camera_zoom_pic)
            
             ui.bar(adjustment=cam_vp.yadjustment,style="vscrollbar",yfill=True,unscrollable="hide")
 

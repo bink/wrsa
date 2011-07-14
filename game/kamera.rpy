@@ -38,18 +38,25 @@ init -1 python:
                     ui.window(xfill=False,background=Solid((0,0,0,100)))
                     ui.image(im.Scale("pho/"+show_camera_large_pic+".png",400,300),xalign=0.5,yalign=0.5)
            
-            ui.bar(adjustment=cam_vp.yadjustment,style="vscrollbar",yfill=True)
-            ui.vbox() # buttons
-            ui.textbutton("An/Aus",clicked=ui.returns("exit"),xfill=True)
-            if show_camera_large_pic != None:
-                ui.textbutton("Zoom",clicked=ui_camera_zoom_pic,xfill=True)
-                ui.textbutton("Zurück",clicked=ui_camera_hide_large_pic,xfill=True)
-                ui.textbutton("Löschen",clicked=ui_camera_delete_pic,xfill=True)
+            ui.bar(adjustment=cam_vp.yadjustment,style="vscrollbar",yfill=True,unscrollable="hide")
+
+            ui.vbox(yalign=0.5) # buttons
+            b = "img/item/kamera_button_"
+            ui.imagebutton(im.Recolor(b+"power.png",255,255,255,100),b+"power.png",clicked=ui.returns("exit"),xalign=0.5)
+            zb = ui.imagebutton(im.Recolor(b+"zoom.png",255,255,255,100),b+"zoom.png",clicked=ui_camera_zoom_pic,xalign=0.5)
+            gb = ui.imagebutton(im.Recolor(b+"gallery.png",255,255,255,100),b+"gallery.png",clicked=ui_camera_hide_large_pic,xalign=0.5)
+            db = ui.imagebutton(im.Recolor(b+"delete.png",255,255,255,100),b+"delete.png",clicked=ui_camera_delete_pic,xalign=0.5)
+            
+            if show_camera_large_pic == None: # buttons aus wenn nicht gebraucht
+                zb.clicked = None
+                gb.clicked = None
+                db.clicked = None
+            
             ui.close() # close vbox
             ui.close() # close hbox
             
             ui.fixed(xpos=790,ypos=110)
-            ui.imagebutton(Solid((0,0,0,0)),Solid((0,0,0,0)),area=(0,0,90,50),clicked=camera_take_photo)
+            ui.imagebutton(ImageReference(("item","kamera_button_up")),Solid((0,0,0,0)),area=(0,0,90,50),clicked=camera_take_photo)
             ui.close()
             
             action = ui.interact()
@@ -96,6 +103,7 @@ init -1 python:
     
     def camera_take_photo():
         newPhoto = renpy.invoke_in_new_context(_camera_take_photo)
+        renpy.transition(Fade(0,0,0.5,color=(255,255,255,255)))
         photos.append(newPhoto)
         return 0
         

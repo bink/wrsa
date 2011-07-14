@@ -7,6 +7,7 @@ init -1 python:
         exit = 0
         while exit != 1:
         
+            renpy.transition(Dissolve(0.1))
         
             # kamera bild
             ui.window(area=(0,0,1024,768),xpadding=0,ypadding=0, background=ImageReference(("item","kamera_menu")))
@@ -85,6 +86,7 @@ init -1 python:
     def _ui_camera_zoom_pic():
         if show_camera_large_pic == None:
             return None
+        renpy.transition(Dissolve(0.3))
         ui.window(yfill=True)
         ui.image("pho/"+show_camera_large_pic+".png",xalign=0.5,yalign=0.5)
         ui.saybehavior()

@@ -6,10 +6,11 @@ init -1 python:
         global show_camera_delete_prompt
         
         exit = 0
+        flash = 0
         while exit != 1:
-        
-            renpy.transition(Dissolve(0.1))
-        
+            if flash == 0:
+                renpy.transition(Dissolve(0.1))
+            
             # kamera bild
             ui.window(area=(0,0,1024,768),xpadding=0,ypadding=0, background=ImageReference(("item","kamera_menu")))
             
@@ -80,6 +81,10 @@ init -1 python:
             
             if action == "exit":
                 exit = 1
+            if action == "photo_taken":
+                flash = 1
+            else:
+                flash = 0
     
     #config.window_overlay_functions.append(ui_camera_menu)
     
@@ -121,6 +126,7 @@ init -1 python:
         if show_camera_large_pic == None:
             return None
         del photos[photos.index(show_camera_large_pic)]
+        ui_camera_hide_delete_prompt()
         return ui_camera_hide_large_pic()
         
     
@@ -133,7 +139,7 @@ init -1 python:
         newPhoto = renpy.invoke_in_new_context(_camera_take_photo)
         renpy.transition(Fade(0,0,0.5,color=(255,255,255,255)))
         photos.append(newPhoto)
-        return 0
+        return "photo_taken"
         
     def _camera_take_photo():
         ui.pausebehavior(0.0)

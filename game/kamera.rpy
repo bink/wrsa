@@ -43,14 +43,14 @@ init -1 python:
             ui.vbox(yalign=0.5) # buttons
             b = "img/item/kamera_button_"
             ui.imagebutton(im.Recolor(b+"power.png",255,255,255,100),b+"power.png",clicked=ui.returns("exit"),xalign=0.5)
-            zb = ui.imagebutton(im.Recolor(b+"zoom.png",255,255,255,100),b+"zoom.png",clicked=ui_camera_zoom_pic,xalign=0.5)
-            gb = ui.imagebutton(im.Recolor(b+"gallery.png",255,255,255,100),b+"gallery.png",clicked=ui_camera_hide_large_pic,xalign=0.5)
-            db = ui.imagebutton(im.Recolor(b+"delete.png",255,255,255,100),b+"delete.png",clicked=ui_camera_delete_pic,xalign=0.5)
-            
-            if show_camera_large_pic == None: # buttons aus wenn nicht gebraucht
-                zb.clicked = None
-                gb.clicked = None
-                db.clicked = None
+            if show_camera_large_pic != None:
+                ui.imagebutton(im.Recolor(b+"zoom.png",255,255,255,100),b+"zoom.png",clicked=ui_camera_zoom_pic,xalign=0.5)
+                ui.imagebutton(im.Recolor(b+"gallery.png",255,255,255,100),b+"gallery.png",clicked=ui_camera_hide_large_pic,xalign=0.5)
+                ui.imagebutton(im.Recolor(b+"delete.png",255,255,255,100),b+"delete.png",clicked=ui_camera_delete_pic,xalign=0.5)
+            else:
+                ui.null(76,76)
+                ui.null(76,76)
+                ui.null(76,76)
             
             ui.close() # close vbox
             ui.close() # close hbox

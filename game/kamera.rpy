@@ -3,9 +3,7 @@ init -1 python:
     
     def ui_camera_menu():
         global show_camera_large_pic
-        #if show_camera_menu == False:
-        #    return
-        ui.window(area=(0,0,1024,768))
+        ui.window(area=(0,0,1024,768),xpadding=0,ypadding=0)
         ui.image(ImageReference(("item","kamera_menu")))    
         
         #screen

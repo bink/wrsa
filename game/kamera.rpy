@@ -28,7 +28,7 @@ init -1 python:
                     ui.grid(int(rowmax),rownum,5) # grid bauen
                     phonum = 0
                     for i in photos: # grid füllen
-                        ui.button(clicked=ui_camera_large_pic(i),ypadding=2,xpadding=2,xmargin=0,ymargin=0)
+                        ui.button(clicked=ui_camera_large_pic(i),ypadding=1,xpadding=1,xmargin=0,ymargin=0,background=Solid((100,100,100,200)),hover_background=Solid((200,200,200,200)))
                         ui.image(im.Scale("pho/"+i+".png",100,75))
                         phonum+=1
                     for i in range(0,(rowmax*rownum)-phonum):

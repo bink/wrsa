@@ -3,6 +3,7 @@ init -1 python:
     
     def ui_camera_menu():
         global show_camera_large_pic
+        global show_camera_delete_prompt
         
         exit = 0
         while exit != 1:
@@ -36,9 +37,23 @@ init -1 python:
                         ui.null()
                     ui.close() # close grid
                 else: # zoom foto anzeigen
-                    ui.window(xfill=False,background=Solid((0,0,0,100)))
+                    ui.fixed(xfill=False,background=Solid((0,0,0,100)))
                     pho = im.Scale("pho/"+show_camera_large_pic+".png",400,300)
                     ui.imagebutton(pho,pho,xalign=0.5,yalign=0.5,clicked=ui_camera_zoom_pic)
+                    if show_camera_delete_prompt == True:
+                        ui.fixed()
+                        ui.window(xfill=True,yfill=True,xmargin=40,ymargin=40,ypadding=50,background=Solid((0,0,0,200)))
+                        ui.vbox(xalign=0.5)
+                        ui.text("Dieses Bild wirklich löschen?",xalign=0.5,yalign=0.5)
+                        ui.null(1,70)
+                        ui.hbox(xalign=0.5)
+                        ui.textbutton("Ja",clicked=ui_camera_delete_pic,xminimum=100)
+                        ui.null(70,1)
+                        ui.textbutton("Nein",clicked=ui_camera_hide_delete_prompt,xminimum=100)
+                        ui.close()
+                        ui.close()
+                        ui.close()
+                    ui.close()
            
             ui.bar(adjustment=cam_vp.yadjustment,style="vscrollbar",yfill=True,unscrollable="hide")
 
@@ -48,7 +63,7 @@ init -1 python:
             if show_camera_large_pic != None:
                 ui.imagebutton(im.Recolor(b+"zoom.png",255,255,255,100),b+"zoom.png",clicked=ui_camera_zoom_pic,xalign=0.5)
                 ui.imagebutton(im.Recolor(b+"gallery.png",255,255,255,100),b+"gallery.png",clicked=ui_camera_hide_large_pic,xalign=0.5)
-                ui.imagebutton(im.Recolor(b+"delete.png",255,255,255,100),b+"delete.png",clicked=ui_camera_delete_pic,xalign=0.5)
+                ui.imagebutton(im.Recolor(b+"delete.png",255,255,255,100),b+"delete.png",clicked=ui_camera_show_delete_prompt,xalign=0.5)
             else:
                 ui.null(76,76)
                 ui.null(76,76)
@@ -91,6 +106,16 @@ init -1 python:
         ui.image("pho/"+show_camera_large_pic+".png",xalign=0.5,yalign=0.5)
         ui.saybehavior()
         ui.interact()
+    
+    def ui_camera_show_delete_prompt():
+        global show_camera_delete_prompt
+        show_camera_delete_prompt = True
+        return 0
+        
+    def ui_camera_hide_delete_prompt():
+        global show_camera_delete_prompt
+        show_camera_delete_prompt = False
+        return 0
     
     def ui_camera_delete_pic():
         if show_camera_large_pic == None:

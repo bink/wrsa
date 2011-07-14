@@ -13,6 +13,7 @@ init -1 python:
     show_inventory_menu = False
     show_camera_menu = False
     show_camera_large_pic = None
+    show_camera_delete_prompt = False
     items = []
 
     # Alle Bilder laden

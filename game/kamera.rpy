@@ -48,6 +48,10 @@ init -1 python:
             ui.close() # close vbox
             ui.close() # close hbox
             
+            ui.fixed(xpos=790,ypos=110)
+            ui.imagebutton(Solid((0,0,0,0)),Solid((0,0,0,0)),area=(0,0,90,50),clicked=camera_take_photo)
+            ui.close()
+            
             action = ui.interact()
             
             if action == "exit":
@@ -93,6 +97,7 @@ init -1 python:
     def camera_take_photo():
         newPhoto = renpy.invoke_in_new_context(_camera_take_photo)
         photos.append(newPhoto)
+        return 0
         
     def _camera_take_photo():
         ui.pausebehavior(0.0)

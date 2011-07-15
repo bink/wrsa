@@ -131,9 +131,14 @@ init python:
         # Kamera-Bildschirm auf dem man alle gemachten Fotos anschauen oder neue machen kann.
         renpy.invoke_in_new_context(ui_camera_menu)
         return
+        
+    def item_notizzettel():
+        renpy.invoke_in_new_context(ui_note_menu)
+        return
     
     newItem("kamera",item_camera)
-        
+    newItem("notizzettel",item_notizzettel)
+    
 # Definitionen
 define h = Character('Hausmeister')
 
@@ -145,6 +150,7 @@ label start:
     
     $ photos = [ ]
     $ inventory = [ ]
+    $ notes = "Notizen:\n"
     
     jump vorstellung
     
@@ -220,6 +226,10 @@ label vorstellung:
     h "Damit kannst du überall Fotos von Dingen und Orten schießen, die du nicht vergessen willst!"
     
     #hide item kamera
+    
+    h "Nimm außerdem noch dies!"
+    
+    $ giveItem("notizzettel","Du hast einen Notizblock erhalten!\nSchreib alles drauf auf, was du brauchst!")
     
     h "Bevor dein Schulalltag beginnt, möchte ich dir die Schule etwas näher vorstellen."    
     h "Bist du bereit?"

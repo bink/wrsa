@@ -48,15 +48,40 @@ init -1 python:
 
 init python:
 
+    # Tolle Funktionen
+    
+    def popupMessage(message,image=None,sound=None,time=None,transition=None):
+        if transition:
+            renpy.transition(transition)
+        else:
+            renpy.transition(dissolve)
+        ui.window(xalign=0.5,yalign=0.5,xfill=False,background=Solid((0,0,0,100)))
+        ui.vbox(xalign=0.5)
+        if image:
+            ui.image(image,xalign=0.5)
+        ui.text(message,xalign=0.5,xmaximum=500,text_align=0.5)
+        ui.close()
+        if time:
+            ui.pausebehavior(time)
+        else:
+            ui.saybehavior()
+        ui.interact()
+        renpy.transition(Dissolve(0.1))
+
     # Item-Funktionen
     
     def newItem(name,action,image=None):
         items.append(item(name,action,image))
         
-    def giveItem(name):
+    def giveItem(name,message=None):
         for i in items:
             if i.name == name:
                 inventory.append(i)
+                if message:
+                    renpy.invoke_in_new_context(give_item_message,i,message)
+            
+    def give_item_message(item,message):
+        popupMessage(message,item.image)
                 
     def takeItem(name):
         for i in inventory:
@@ -180,23 +205,23 @@ label vorstellung:
     h "Willkommen in der Wilhelm-Raabe-Schule, %(vorname)s!"
     h "Als Geschenk zum Schulanfang, überreiche ich dir dies hier!"
     
-    show item kamera:
-        xalign 0.5 yalign 0.5
-        zoom 0.0
-        linear 0.5 zoom 1.0
+    #show item kamera:
+    #    xalign 0.5 yalign 0.5
+    #    zoom 0.0
+    #    linear 0.5 zoom 1.0
     
-    h "Eine brandneue Digitalkamera!"
+    #h "Eine brandneue Digitalkamera!"
     
-    show item kamera:
-        linear 0.5 zoom 0.0
+    #show item kamera:
+    #    linear 0.5 zoom 0.0
     
-    $ giveItem("kamera")
+    $ giveItem("kamera","Du hast eine Digitalkamera erhalten!\nMit ihr kannst du Fotos machen und so Eindrücke festhalten, die du niemals vergessen willst!")
     
     h "Damit kannst du überall Fotos von Dingen und Orten schießen, die du nicht vergessen willst!"
     
-    hide item kamera
+    #hide item kamera
     
-    h "Bevor dein Schulalltag beginnt, möchte ich dir die Schule etwas näher vorstellen."
+    h "Bevor dein Schulalltag beginnt, möchte ich dir die Schule etwas näher vorstellen."    
     h "Bist du bereit?"
     menu:
         "Ja!":

@@ -87,6 +87,12 @@ init python:
         for i in inventory:
             if i.name == name:
                 del inventory[inventory.index(i)]
+                
+    def hasItem(name):
+        for i in inventory:
+            if i.name == name:
+                return True
+        return False
             
     # Haupt-Buttons
     
@@ -96,8 +102,10 @@ init python:
         
         ui.vbox(xpos=1.0,ypos=1.0,xanchor="right",yanchor="bottom")
         ui.textbutton("Inventar",clicked=toggle_ui_inventory)
-        ui.textbutton("Kamera",clicked=camera_take_photo)
-        ui.textbutton("Notizen",clicked=toggle_ui_notes)
+        if (hasItem("kamera")):
+            ui.textbutton("Kamera",clicked=camera_take_photo)
+        if (hasItem("notizzettel")):
+            ui.textbutton("Notizen",clicked=toggle_ui_notes)
         ui.close()
         
     config.window_overlay_functions.append(ui_button_menu)

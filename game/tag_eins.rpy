@@ -5,21 +5,9 @@ label vorstellung:
     h "Willkommen in der Wilhelm-Raabe-Schule, %(vorname)s!"
     h "Als Geschenk zum Schulanfang, überreiche ich dir dies hier!"
     
-    #show item kamera:
-    #    xalign 0.5 yalign 0.5
-    #    zoom 0.0
-    #    linear 0.5 zoom 1.0
-    
-    #h "Eine brandneue Digitalkamera!"
-    
-    #show item kamera:
-    #    linear 0.5 zoom 0.0
-    
     $ giveItem("kamera","Du hast eine Digitalkamera erhalten!\nMit ihr kannst du Fotos machen und so Eindrücke festhalten, die du niemals vergessen willst!")
     
     h "Damit kannst du überall Fotos von Dingen und Orten schießen, die du nicht vergessen willst!"
-    
-    #hide item kamera
     
     h "Bevor dein Schulalltag beginnt, möchte ich dir die Schule etwas näher vorstellen."    
     h "Bist du bereit?"

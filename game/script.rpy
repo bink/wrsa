@@ -158,8 +158,13 @@ label start:
     $ photos = [ ]
     $ inventory = [ ]
     
-    jump vorstellung
-    
+    menu:
+        "Formular überspringen?"
+        "Ja":
+            jump vorstellung
+        "Nein":
+            "OK"
+            
     scene bg black with fade
     
     "Oh, das Anmeldeformular von der Schule ist da."
@@ -169,43 +174,86 @@ label start:
     "Na dann werde ich das mal ausfüllen..."
     
     jump formular
-    
-label formular:
-    "Zuerst den Vornamen."
-    $ vorname = renpy.input("Vorname:","Max",length=50)
-    "OK, jetzt den Nachnamen."
-    $ nachname = renpy.input("Nachname:",u"Musterschüler",length=50)    
-    "Nun noch das Alter..."
 
-label altersinput:
-    $ alter = renpy.input("Alter:","14",length=3,allow="0123456789")
+label formular:
     python:
-        try:
-            alter = int(alter)
-        except:
-            alter = 14
-    "Und das Geschlecht."
-    menu:
-        "Geschlecht:"
-        "Männlich":
-            $ geschlecht = u"Männlich"
-        "Weiblich":
-            $ geschlecht = u"Weiblich"
-    "So, schon fertig!"
-    "Stimmt das nun auch alles?"
-    menu:
-        "Name: %(vorname)s %(nachname)s. %(geschlecht)s. %(alter)s Jahre alt."
-        "Stimmt!":
-            "Super, stimmt alles!"
-            "Dann ab damit zur Post..."
+        vorname = ""
+        nachname = ""
+        alter = ""
+        geschlecht = ""
+        
+        input_valid = False
+        while input_valid == False:
+            ui.window(area=(0,0,1024,768),background=Solid((0,0,0,255)))
+            ui.vbox()
             
-            $ renpy.pause(1.0)
+            ui.hbox()
+            ui.window(style="ui_window",size_group="labels")
+            ui.text("Vorname: ",xalign=1.0)
+            ui.window(style="ui_window",size_group="inputs",xminimum=200)
+            ui.text(vorname)
+            ui.textbutton("Edit",clicked=ui.returns("edit_firstname"))
+            ui.close()
             
-            "Kurze Zeit später..."
+            ui.hbox()
+            ui.window(style="ui_window",size_group="labels")
+            ui.text("Nachname: ",xalign=1.0)
+            ui.window(style="ui_window",size_group="inputs",xminimum=200)
+            ui.text(nachname)
+            ui.textbutton("Edit",clicked=ui.returns("edit_lastname"))
+            ui.close()
             
-            # herzlichen glückwunsch, sie wurden angenommen!
-            jump vorstellung
-        "Nein, warte...":
-            "Ups, das stimmt ja gar nicht!"
-            "Also nochmal..."
-            jump formular
+            ui.hbox()
+            ui.window(style="ui_window",size_group="labels")
+            ui.text("Alter: ",xalign=1.0)
+            ui.window(style="ui_window",size_group="inputs",xminimum=200)
+            ui.text("%s" % alter)
+            ui.textbutton("Edit",clicked=ui.returns("edit_age"))
+            ui.close()
+            
+            ui.hbox()
+            ui.window(style="ui_window",size_group="labels")
+            ui.text("Geschlecht: ")
+            ui.window(style="ui_window",size_group="inputs",xminimum=200)
+            ui.text("%s" % geschlecht)
+            ui.textbutton("Edit",clicked=ui.returns("edit_gender"))
+            ui.close()
+            ui.textbutton("Absenden",clicked=ui.returns("done"))
+            ui.close()
+            
+            result = ui.interact()
+            
+            if result == "edit_firstname":
+                ui.window(style="ui_window",xalign=0.5,yalign=0.5,background=Solid((0,0,0,150)))
+                ui.vbox()
+                ui.text("Gib deinen Vornamen ein:",xalign=0.5)
+                ui.input(vorname,xalign=0.5)
+                ui.close()
+                vorname = ui.interact()
+            elif result == "edit_lastname":
+                ui.window(style="ui_window",xalign=0.5,yalign=0.5,background=Solid((0,0,0,150)))
+                ui.vbox()
+                ui.text("Gib deinen Nachnamen ein:",xalign=0.5)
+                ui.input(nachname,xalign=0.5)
+                ui.close()
+                nachname = ui.interact()
+            elif result == "edit_age":
+                ui.window(style="ui_window",xalign=0.5,yalign=0.5,background=Solid((0,0,0,150)))
+                ui.vbox()
+                ui.text("Gib dein Alter ein:",xalign=0.5)
+                ui.input(str(alter),xalign=0.5,allow="0123456789",length=3)
+                ui.close()
+                alter = int(ui.interact())
+            elif result == "edit_gender":  
+                ui.window(style="ui_window",xalign=0.5,yalign=0.5,background=Solid((0,0,0,150)))
+                ui.vbox()
+                ui.text("Gib dein Geschlecht an:",xalign=0.5)
+                ui.textbutton("Männlich",size_group="gender_buttons",clicked=ui.returns("Männlich"),xalign=0.5)
+                ui.textbutton("Weiblich",size_group="gender_buttons",clicked=ui.returns("Weiblich"),xalign=0.5)
+                ui.close()
+                geschlecht = ui.interact()
+            elif result == "done":
+                if vorname != "" and nachname != "" and alter != "" and geschlecht != "":
+                    input_valid = True
+        
+    jump vorstellung

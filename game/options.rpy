@@ -118,6 +118,11 @@ init -1 python hide:
     ## and padding.
 
     # style.window.yminimum = 250
+    
+    style.ui_window = Style(style.window)
+    style.ui_window.xfill = False
+    style.ui_window.yminimum = 0
+    style.ui_window.background = None
 
 
     #########################################

@@ -117,7 +117,7 @@ init python:
         if show_inventory_menu == True:
             renpy.transition(CropMove(.3,"custom",(0,0,1.0,0.2),(0,0),(0,0,1.0,0.0),(0,0),topnew=False))
         else:
-            renpy.transition(wipedown)
+            renpy.transition(CropMove(.3,"custom",(0,0,1.0,0.0),(0,0),(0,0,1.0,0.2),(0,0),topnew=True))
         show_inventory_menu = not show_inventory_menu
         renpy.restart_interaction()
         

@@ -267,7 +267,7 @@ init -1 python hide:
     
     ## Disable rollback
     
-    config.hard_rollback_limit = 0
+    config.hard_rollback_limit = 100
 
     #########################################
     ## More customizations can go here.

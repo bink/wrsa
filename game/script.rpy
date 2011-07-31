@@ -150,6 +150,7 @@ init python:
 define p = DynamicCharacter('vorname')
 define h = Character('Hausmeister')
 define r = Character('Schüler')
+define u = Character('???')
 
 image bg black = Solid((0,0,0,255))
 image bg white = Solid((255,255,255,255))

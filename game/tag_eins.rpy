@@ -182,7 +182,39 @@ label tag_eins_sekretariat:
 
 label tag_eins_lehrerzimmer:
     # hier wird das lehrerzimmer belauscht
-    "Szene für Lehrerzimmer fehlt."
+    "Ich würde mal behaupten, dass es hinter dieser Tür ist."
+    "Nanu?"
+    "Die steht ja offen?"
+    "Gut, dann muss ich ja gar nicht klopfen."
+    "Ich werd einfach mal fragen."
+    "Oh, da redet grad jemand."
+    # bild vom lehrerzimmer innen
+    # zwei lehrer und "der unbekannte"
+    # ein spalt durch den man die szene sieht
+    u "Das bedarf aber noch einiger Vorbereitungen."
+    u "Wir dürfen uns keinerlei Fehler leisten."
+    "Großer Lehrer" "Das Stimmt."
+    "Großer Lehrer" "Wenn das schiefgehen sollte dann... (undeutliches Gemurmel)"
+    "Kleine, dicke Lehrerin" "Aber wir müssen sehr vorsichtig sein."
+    "Kleine, dicke Lehrerin" "In der Tat brauchen wir noch viel Zeit und Vorbereitungen."
+    "Kleine, dicke Lehrerin" "Aber die Schüler dürfen auf keinen Fall etwas davon mitbekommen."
+    u "Richtig. {w}Wir müssen schnell, effizient und unauffällig handeln."
+    u "Nicht auszudenken, was sonst passieren würde."
+    u "Unser Plan (genuschel) hinfällig und (laute Nebengeräusche) Massenpanik!"
+    "Kleine, dicke Lehrerin" "Zum Glück hat mit der Lieferung (lautes Niesen) geklappt."
+    "Kleine, dicke Lehrerin" "Und (geräuschvolles Naseputzen) ist gut versteckt."
+    "Großer Lehrer" "Wo denn, wenn man fragen darf?"
+    "Großer Lehrer" "Man weiß ja nie. {w}Am besten wir wissen alle wo..."
+    "Kleine, dicke Lehrerin" "(Jemand fängt an laut und ausgiebig mit Papier zu rascheln)... Tür."
+    "Kleine, dicke Lehrerin" "Der Schlüssel bleibt allerdings (Kaffeemaschine röchelt)... nur zur Sicherheit."
+    u "Gut. {w}Und zur Sicherheit sollten wir diese Besprechung ein anderes Mal fortsetzen und das Lehrerzimmer wieder öffnen."
+    u "So, die nächste Dienstbesprechung findet dann wie verabredet statt."
+    u "Ach ja, und da der Kollege (XY) immer noch krank ist, muss eine Dauervertretung für seine 8. Klasse organisiert werden."
+    u "Ich muss jetzt jedenfalls noch ein paar Atlanten holen."
+    "Oh, oh."
+    "Sie kommen raus."
+    "Ich gehe besser."
+    
     # dann kommen freund oder lehrer
     if freund > 0:
         jump tag_eins_abholen_freund

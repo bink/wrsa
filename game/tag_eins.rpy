@@ -46,8 +46,8 @@ label vorstellung:
     h "1970 wurde dieser Neubau errichtet, in dem die naturwissenschaftlichen Räume untergebracht sind."
     h "Von 2006-2008 wurden die Fachräume renoviert und neue Klassenräume im Erdgeschoss eingerichtet."
     
-    scene bg schulhof
-    show x neutral at left with wipeleft
+    scene bg schulhof with wipeleft
+    show x neutral at left with dissolve
     
     h "Dies ist der Schulhof."
     h "Er wurde erst vor ein paar Wochen fertiggestellt."
@@ -55,6 +55,8 @@ label vorstellung:
     h "Sehen wir uns mal das Gebäude von innen an! Folge mir!"
     
     scene bg black with fade # foto von vor der halle
+    
+    show x neutral at left with dissolve
     
     h "Hier befindet sich unsere schöne Gymnastikhalle."
     h "Sie ist so alt wie das Gebäude und wenn sie abbrennen würde sicherlich nicht gesundheitsfördernd, aber egal!"
@@ -74,6 +76,8 @@ label vorstellung:
     h "Du solltest dich eventuell im Sekretariat melden. Da erfährst du dann auch in welche Klasse du musst."
     
     # hausmeister verschwindet
+    
+    hide x with dissolve
     
     "Also zum Sekretariat."
     "Wo finde ich das nur?"
@@ -110,9 +114,72 @@ label tag_eins_rechts:
     
 label tag_eins_oben:
     # der spieler kommt oben an
-    "Szene für oben fehlt."
-    jump tag_eins_lehrerzimmer
+    "Puh, hier ist ja alles voller Türen."
+    "Welche führt denn nun zum Sekretariat?"
+    menu:
+        "Was mach ich nur?"
+        "Ich sollte einen Schüler fragen.":
+            jump tag_eins_schueler_fragen
+        "Ich probier einfach eine Tür aus.":
+            "Ach, was solls!"
+            "Ich nehm einfach diese Tür hier!"
+            $ rand = renpy.random.randint(1,3)
+            $ print rand
+            if rand == 1:
+                # bild vom sek
+                "Tatsache, hier stehts sogar dran."
+                "Volltreffer!"
+                jump tag_eins_sekretariat
+            elif rand == 2:
+                # bild vom direktorzimmer
+                "Dann klopf ich mal hier."
+                # klopfgeräusch
+                "..."
+                # klopfgeräusch
+                "Macht keiner auf."
+                jump tag_eins_schueler_fragen
+            elif rand == 3:
+                # bild vom koordinatorenzimmer
+                "Hier steht Koordinatoren dran."
+                "Ob ich klopfen soll?"
+                "Ich horche lieber mal an der Tür..."
+                "..."
+                "..."
+                "Stille."
+                "Nein, hier arbeitet bestimmt nie jemand."
+                "Aber ich weiss immer noch nicht, wo das Sekretariat ist."
+                jump tag_eins_schueler_fragen
+                
+label tag_eins_schueler_fragen:
+    "Ich frag einfach mal jemanden, der vorbeikommt."
+    "Ah, da ist ja jemand."
+    p "Entschuldigung!"
+    r "Hä?"
+    p "Kannst du mir vielleicht sagen, wo das Sekretariat ist?"
+    p "Ich bin neu hier und kenne mich nicht aus."
+    r "Äh..."
+    r "Da hinten?"
+    p "...ok."
+    "Scheint als wären die hier nicht besonders gesprächig."
+    "Immerhin weiss ich jetzt, wo das Sekretariat ist, also schau ich mal dort vorbei."
+    # bild vom sek
+    "Das hier muss es sein."
+    jump tag_eins_sekretariat
     
+label tag_eins_sekretariat:
+    "Dann klopf ich mal an..."
+    # klopf ton
+    "Hm..."
+    "Macht keiner auf?"
+    # klopf ton
+    "..."
+    "Oh, hier hängt ein Zettel."
+    "”Öffnungszeiten: 8-10 Uhr und 11-14 Uhr\nBei dringenen Fragen bitte im Lehrerzimmer melden.”"
+    "Von 10 bis 11 ist also Mittagspause?"
+    "Super, es ist eine Minute nach Zehn!"
+    "Dann muss ich wohl zum Lehrerzimmer."
+    jump tag_eins_lehrerzimmer
+
 label tag_eins_lehrerzimmer:
     # hier wird das lehrerzimmer belauscht
     "Szene für Lehrerzimmer fehlt."
@@ -148,14 +215,14 @@ label tag_eins_nach_dem_unterricht:
 label tag_eins_gespräch_lehrer:
     # labern mit dem lehrer
     "Gespräch mit dem Lehrer fehlt."
-    jump tag_eins_sekretariat
+    jump tag_eins_endlich_sekretariat
     
 label tag_eins_gespräch_freund:
     # labern mit dem freund
     "Gespräch mit dem Freund fehlt."
-    jump tag_eins_sekretariat
+    jump tag_eins_endlich_sekretariat
     
-label tag_eins_sekretariat:
+label tag_eins_endlich_sekretariat:
     # hier erhält man den raumplan
     "Gespräch im Sekretariat fehlt."
     "Demo vorbei!"

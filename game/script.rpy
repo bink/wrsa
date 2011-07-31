@@ -147,7 +147,9 @@ init python:
     newItem("kamera",item_camera)
         
 # Definitionen
+define p = DynamicCharacter('vorname')
 define h = Character('Hausmeister')
+define r = Character('Schüler')
 
 image bg black = Solid((0,0,0,255))
 image bg white = Solid((255,255,255,255))
@@ -161,6 +163,11 @@ label start:
     menu:
         "Formular überspringen?"
         "Ja":
+            python:
+                vorname = "Max"
+                nachname = "Musterschüler"
+                alter = 14
+                geschlecht = "Männlich" 
             jump vorstellung
         "Nein":
             "OK"
@@ -255,5 +262,13 @@ label formular:
             elif result == "done":
                 if vorname != "" and nachname != "" and alter != "" and geschlecht != "":
                     input_valid = True
-        
+    
+    "So, das wäre geschafft!"
+    "Jetzt ab zum Briefkasten damit."
+    
+    $ renpy.pause(2.0)
+    
+    "Kurze Zeit später..."
+    
+    # bild mit "Du wurdest angenommen" usw.   
     jump vorstellung

@@ -149,6 +149,7 @@ init python:
 # Definitionen
 define p = DynamicCharacter('vorname')
 define h = Character('Hausmeister')
+define f = Character('<FREUND NAME?>')
 define r = Character('Schüler')
 define u = Character('???')
 

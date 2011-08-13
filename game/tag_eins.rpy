@@ -101,8 +101,105 @@ label vorstellung:
                 "Vielleicht ist es ja doch drinnen?"
                 
 label tag_eins_links:
+    # bild gang links
+    "Ob es hier wirklich zum Sekretariat geht?"
+    "Sieht irgendwie nicht so aus."
+    "Ich hätte wohl besser jemanden fragen sollen."
+    $ freund += 5
     # hier folgt das treffen mit freund oder freundin
-    "Gespräch mit Freund fehlt."
+    # entsprechend wird aufgespalten
+    if geschlecht == "Männlich":
+        # bild freund
+        "Typ" "Hast dich wohl verlaufen, was?"
+        "Wer ist der denn? {w}Und wieso labert der mich so von der Seite an?"
+        "Typ" "Bist du neu hier?"
+        "Typ" "Hab dich noch nie hier gesehen."
+        # erste frage
+        menu:
+            "Ja, heute ist mein erster Schultag.":
+                p "Ja, heute ist mein erster Schultag."
+                "Typ" "War ja klar."
+                "Typ" "Die neuen verlaufen sich dauernd hier."
+                "Typ" "Dabei stehen extra überall Schilder... {w}aber lesen kannste wohl nicht."
+                menu:
+                    "Haha! Sehr witzig!":
+                        p "Haha! Sehr witzig!"
+                        p "Du hälst dich wohl für besonders lustig, was?"
+                        "Typ" "Hey... man darf doch wohl mal einen Witz machen..."
+                    "Nein... das hab ich nie gelernt.":
+                        p "Nein... das hab ich nie gelernt."
+                        "Typ" "W-Was?"
+                        "Typ" "Echt nicht?"
+                        p "Das war ein Witz."
+                        "Typ" "..."
+                        "Typ" "Ich weiß..."
+            "Nein, ich bin schon lange hier.":
+                p "Nein, ich bin schon lange hier."
+                "Typ" "Ja klar."
+                "Typ" "Dann kannst du mir sicher sagen, wo es hier zum Sekretariat geht, oder?"
+                p "..."
+                "Typ" "Dachte ich mir doch!"
+                "Typ" "Du bist sehr wohl neu!"
+                p "Ja."
+                "Typ" "Das merkt man sofort."
+            "Das geht dich gar nichts an!":
+                p "Das geht dich gar nichts an!"
+                "Typ" "Reg dich nicht gleich so auf."
+                "Typ" "Wollte ja nur helfen."
+        # zweite frage
+        $ antworten = [] # Wird gesetzt um herauszufinden ob der Spieler bereits alle wichtigen Infos hat
+        while not 1 in antworten:
+            menu:
+                "Kannst du mir sagen, wie ich zum Sekretariat komme?":
+                    p "Kannst du mir sagen, wie ich zum Sekretariat komme?"
+                    p "Ich soll mich da melden aber hab keine Ahnung wo es ist."
+                    "Typ" "Klar kann ich das."
+                    "Typ" "Du gehst zurück in die Eingangshalle und dann die Treppe nach oben."
+                    "Typ" "Da siehst du es dann schon."
+                    "Typ" "Alles klar?"
+                    p "Glaub schon."
+                    p "Danke für die Hilfe."
+                    "Typ" "Hey, warte mal!"
+                    p "Was denn?"
+                    "Typ" "Ich bin %(freundvorname)s."
+                    f "Wie heißt du?"
+                    p "%(vorname)s."
+                    f "Alles klar, %(vorname)s."
+                    f "Man sieht sich!"
+                    # verschwindet
+                    "Komischer Typ."
+                    $ antworten.append(1) # alle infos erhalten, weiter
+                "Wer bist du überhaupt?" if not 2 in antworten: 
+                    p "Wer bist du überhaupt?"
+                    "Typ" "Ich bin %(freundvorname)s."
+                    f "Und du?"
+                    p "%(vorname)s."
+                    f "Freut mich, %(vorname)s."
+                    $ antworten.append(2) # antwort bereits gewählt
+                "Tschüss!":
+                    p "Tschüss!"
+                    "Typ" "Hey! Warte doch mal!"
+                    "Typ" "Du kennst dich doch überhaupt nicht hier aus, oder?"
+                    "Typ" "Wohin willst du denn?"
+                    p "Zum Sekretariat."
+                    "Typ" "Kein Problem!"
+                    "Typ" "Einfach die Treppe in der Eingangshalle nach oben und schon siehst du es."
+                    "Typ" "Verstanden?"
+                    p "Denke schon."
+                    p "Danke für die Hilfe."
+                    "Typ" "Wie heißt du überhaupt?"
+                    p "%(vorname)s."
+                    "Typ" "Freut mich, %(vorname)s."
+                    "Typ" "Ich bin %(freundvorname)s."
+                    f "Also dann... {w}wir laufen uns bestimmt nochmal über den Weg, wenn du jetzt hier zur Schule gehst."
+                    f "Bis dann!"
+                    # verschwindet
+                    "Komischer Typ."
+                    $ antworten.append(1) # alle infos erhalten, weiter
+        "Also muss ich doch nach oben."
+        "Dann mal los..."
+    elif geschlecht == "Weiblich":
+        "Dialog für Freundin fehlt."
     # nach dem gespräch gehts oben weiter, es muss also passend enden
     jump tag_eins_oben
     

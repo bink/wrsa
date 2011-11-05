@@ -54,7 +54,7 @@ label vorstellung:
     h "Vorher glich er einer staubigen Wüste, die sich im Herbst in einen Sumpf verwandelte, haha!"
     h "Sehen wir uns mal das Gebäude von innen an! Folge mir!"
     
-    scene bg black with fade # foto von vor der halle
+    scene bg gymnastikhalle with fade # foto von vor der halle
     
     show x neutral at left with dissolve
     
@@ -63,11 +63,26 @@ label vorstellung:
     h "Das da vorne ist eine Treppe in den ersten Stock."
     h "Gehen wir nun über diesen langen Flur in die Eingangshalle."
     
-    # eingangshalle
+    scene bg eingangshalle_doppeltuer with fade
+    show x neutral at left with dissolve
     
     h "Sieh dir diese beeindruckende Halle an!"
+    
+    with None
+    show bg eingangshalle_schulhoftuer
+    show x neutral at right
+    with dissolve
+    
     h "Über diese Flügeltür geht es wieder auf den Schulhof."
+    
+    with None
+    show bg eingangshalle_treppe
+    show x neutral at left
+    with dissolve
+    
     h "Folgst du dieser Treppe, gelangst du in den ersten Stock."
+    
+    show x neutral at center with move
     
     h "So, nun muss ich aber wieder an die Arbeit!"
     h "In so einer Schule hat man viel zu tun."
@@ -101,7 +116,8 @@ label vorstellung:
                 "Vielleicht ist es ja doch drinnen?"
                 
 label tag_eins_links:
-    # bild gang links
+    scene bg gang_links_eg
+    with fade
     "Ob es hier wirklich zum Sekretariat geht?"
     "Sieht irgendwie nicht so aus."
     "Ich hätte wohl besser jemanden fragen sollen."

@@ -145,16 +145,28 @@ init python:
         return
     
     newItem("kamera",item_camera)
-        
+
+
 # Definitionen
+# Chars
 define p = DynamicCharacter('vorname')
 define h = Character('Hausmeister')
 define f = Character('<FREUND NAME?>')
 define r = Character('Schüler')
 define u = Character('???')
 
+# Standardbilder
 image bg black = Solid((0,0,0,255))
 image bg white = Solid((255,255,255,255))
+
+# Positionen
+transform flip:
+    xzoom -1.0
+    
+transform left:
+    xpos 0.0 xanchor 0.0 xzoom 1.0 ypos 1.0 yanchor 1.0
+transform right:
+    xpos 1.0 xanchor 0.0 xzoom -1.0 ypos 1.0 yanchor 1.0
 
 # Hier startet das eigentliche Spiel
 label start:

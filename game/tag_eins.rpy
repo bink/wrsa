@@ -5,7 +5,7 @@ label vorstellung:
 
     scene bg haupteingang with fade
 
-    h "Willkommen in der Wilhelm-Raabe-Schule, %(vorname)s!"
+    h "Willkommen in der Wilhelm-Raabe-Schule, [vorname]!"
     
     "Nanu?"
     "Wer ist da?"
@@ -177,20 +177,20 @@ label tag_eins_links:
                     p "Danke für die Hilfe."
                     "Typ" "Hey, warte mal!"
                     p "Was denn?"
-                    "Typ" "Ich bin %(freundvorname)s."
+                    "Typ" "Ich bin [freundvorname]."
                     f "Wie heißt du?"
-                    p "%(vorname)s."
-                    f "Alles klar, %(vorname)s."
+                    p "[vorname]."
+                    f "Alles klar, [vorname]."
                     f "Man sieht sich!"
                     # verschwindet
                     "Komischer Typ."
                     $ antworten.append(1) # alle infos erhalten, weiter
                 "Wer bist du überhaupt?" if not 2 in antworten: 
                     p "Wer bist du überhaupt?"
-                    "Typ" "Ich bin %(freundvorname)s."
+                    "Typ" "Ich bin [freundvorname]."
                     f "Und du?"
-                    p "%(vorname)s."
-                    f "Freut mich, %(vorname)s."
+                    p "[vorname]."
+                    f "Freut mich, [vorname]."
                     $ antworten.append(2) # antwort bereits gewählt
                 "Tschüss!":
                     p "Tschüss!"
@@ -204,9 +204,9 @@ label tag_eins_links:
                     p "Denke schon."
                     p "Danke für die Hilfe."
                     "Typ" "Wie heißt du überhaupt?"
-                    p "%(vorname)s."
-                    "Typ" "Freut mich, %(vorname)s."
-                    "Typ" "Ich bin %(freundvorname)s."
+                    p "[vorname]."
+                    "Typ" "Freut mich, [vorname]."
+                    "Typ" "Ich bin [freundvorname]."
                     f "Also dann... {w}wir laufen uns bestimmt nochmal über den Weg, wenn du jetzt hier zur Schule gehst."
                     f "Bis dann!"
                     # verschwindet

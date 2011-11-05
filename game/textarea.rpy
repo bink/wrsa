@@ -4,7 +4,7 @@ init -1 python:
     from renpy.ui import Wrapper
     from renpy.display.behavior import map_event
     
-    class Textarea(renpy.display.text.Text):
+    class Textarea(renpy.text.text.Text):
         """
         This is a Displayable that takes multiple lines of text as input.
         """

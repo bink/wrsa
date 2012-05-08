@@ -272,4 +272,8 @@ init -1 python hide:
     #########################################
     ## More customizations can go here.
     
+    ## Automatisches Laden von Bildern
+    
+    config.automatic_images = [' ','_','/']
+    config.automatic_images_strip = ["img"]
     

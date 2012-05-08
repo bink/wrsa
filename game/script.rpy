@@ -17,13 +17,13 @@ init -1 python:
     items = []
 
     # Alle Bilder laden
-    imagepath = config.basedir + "/game/img/"    
-    for path, dirs, files in os.walk(imagepath):
-        for file in files:
-            if file[-4:] not in [".jpg",".png"]: continue #nur png und jpg
-            filename = path[len(imagepath):]+"/"+file
-            nametuple = tuple(filename[:-4].split("/"))
-            renpy.image(nametuple,"img/"+filename)
+    #imagepath = config.basedir + "/game/img/"    
+    #for path, dirs, files in os.walk(imagepath):
+    #    for file in files:
+    #        if file[-4:] not in [".jpg",".png"]: continue #nur png und jpg
+    #        filename = path[len(imagepath):]+"/"+file
+    #        nametuple = tuple(filename[:-4].split("/"))
+    #        renpy.image(nametuple,"img/"+filename)
     
     # Klassen
     
